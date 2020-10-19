@@ -45,7 +45,6 @@ export default function editor(state = initial_state, action) {
 
             // build an object to save the snap
             let snap = {
-                user: action.uid ? action.uid : "unknown",
                 timestamp: Date.now(),
                 text: action.text,
                 error: false
@@ -70,7 +69,7 @@ export default function editor(state = initial_state, action) {
             snapshots.push(snap);
 
             fetch("/apiv1/snapshots/", {
-                headers: new Headers({ "Content-Type": "application/json" }),
+                headers: new Headers({ "Content-Type": "application/json", "x-access-token": action.uid ? action.uid : null}),
                 method: "post",
                 body: JSON.stringify(snap)
             });
